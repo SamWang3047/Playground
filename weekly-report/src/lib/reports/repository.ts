@@ -1,6 +1,13 @@
 import type { WeeklyReport } from "@/lib/reports/types";
 
-const mockReports: WeeklyReport[] = [
+type InsertWeeklyReportInput = {
+  week: string;
+  title: string;
+  summary: string;
+  createdAt: string;
+};
+
+const seedReports: WeeklyReport[] = [
   {
     id: "rpt-001",
     week: "2026-W08",
@@ -24,6 +31,8 @@ const mockReports: WeeklyReport[] = [
   },
 ];
 
+let reportsStore: WeeklyReport[] = [...seedReports];
+
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -36,5 +45,18 @@ export async function findAllReports(): Promise<WeeklyReport[]> {
     throw new Error("Simulated report query failure");
   }
 
-  return mockReports;
+  return [...reportsStore];
+}
+
+export async function insertReport(input: InsertWeeklyReportInput): Promise<WeeklyReport> {
+  const report: WeeklyReport = {
+    id: `rpt-${Date.now()}`,
+    week: input.week,
+    title: input.title,
+    summary: input.summary,
+    createdAt: input.createdAt,
+  };
+
+  reportsStore = [report, ...reportsStore];
+  return report;
 }

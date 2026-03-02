@@ -2,6 +2,8 @@ import Link from "next/link";
 import { ReportList } from "@/components/ReportList";
 import { getRecentReports } from "@/lib/reports/service";
 
+export const dynamic = "force-dynamic";
+
 export default async function HomePage() {
   const recentReports = await getRecentReports(2);
 

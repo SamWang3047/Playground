@@ -1,6 +1,8 @@
 import { ReportList } from "@/components/ReportList";
 import { getReportsForList } from "@/lib/reports/service";
 
+export const dynamic = "force-dynamic";
+
 export default async function ReportsPage() {
   const reports = await getReportsForList();
 
