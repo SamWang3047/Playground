@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { ReportList } from "@/components/ReportList";
-import { mockReports } from "@/lib/mockReports";
+import { getRecentReports } from "@/lib/reports/service";
 
-export default function HomePage() {
-  const recentReports = mockReports.slice(0, 2);
+export default async function HomePage() {
+  const recentReports = await getRecentReports(2);
 
   return (
     <div className="space-y-6">

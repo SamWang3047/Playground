@@ -1,5 +1,5 @@
 import { ReportCard } from "@/components/ReportCard";
-import type { WeeklyReport } from "@/lib/mockReports";
+import type { WeeklyReport } from "@/lib/reports/types";
 
 type ReportListProps = {
   reports: WeeklyReport[];

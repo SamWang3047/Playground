@@ -1,12 +1,6 @@
-export type WeeklyReport = {
-  id: string;
-  week: string;
-  title: string;
-  summary: string;
-  createdAt: string;
-};
+import type { WeeklyReport } from "@/lib/reports/types";
 
-export const mockReports: WeeklyReport[] = [
+const mockReports: WeeklyReport[] = [
   {
     id: "rpt-001",
     week: "2026-W08",
@@ -29,3 +23,18 @@ export const mockReports: WeeklyReport[] = [
     createdAt: "2026-02-19",
   },
 ];
+
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+export async function findAllReports(): Promise<WeeklyReport[]> {
+  // Day 3: 模拟后端查询耗时，便于观察 loading.tsx 效果。
+  await sleep(700);
+
+  if (process.env.SIMULATE_REPORT_ERROR === "true") {
+    throw new Error("Simulated report query failure");
+  }
+
+  return mockReports;
+}
