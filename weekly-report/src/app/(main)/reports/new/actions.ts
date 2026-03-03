@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { requireSessionUser } from "@/lib/auth/session";
 import { createWeeklyReport } from "@/lib/reports/service";
 import {
   initialCreateReportFormState,
@@ -30,6 +31,7 @@ export async function createReportAction(
   prevState: CreateReportFormState = initialCreateReportFormState,
   formData: FormData,
 ): Promise<CreateReportFormState> {
+  const user = await requireSessionUser();
   const title = String(formData.get("title") ?? "").trim();
   const summary = String(formData.get("summary") ?? "").trim();
 
@@ -42,7 +44,7 @@ export async function createReportAction(
     };
   }
 
-  await createWeeklyReport({ title, summary });
+  await createWeeklyReport(user.id, { title, summary });
   revalidatePath("/");
   revalidatePath("/reports");
   redirect("/reports");

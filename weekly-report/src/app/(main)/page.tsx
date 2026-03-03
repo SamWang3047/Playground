@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { ReportList } from "@/components/ReportList";
+import { requireSessionUser } from "@/lib/auth/session";
 import { getRecentReports } from "@/lib/reports/service";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const recentReports = await getRecentReports(2);
+  const user = await requireSessionUser();
+  const recentReports = await getRecentReports(user.id, 2);
 
   return (
     <div className="space-y-6">

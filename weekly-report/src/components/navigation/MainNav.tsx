@@ -4,7 +4,6 @@ const navItems = [
   { href: "/", label: "首页" },
   { href: "/reports", label: "历史周报" },
   { href: "/reports/new", label: "写周报" },
-  { href: "/login", label: "登录" },
 ];
 
 export function MainNav() {

@@ -28,12 +28,11 @@ function SubmitButton() {
   );
 }
 
-export function ReportForm({ action }: ReportFormProps) {
-  const [state, formAction] = useActionState(action, initialCreateReportFormState);
+function Fields({ state }: { state: CreateReportFormState }) {
+  const { pending } = useFormStatus();
 
   return (
-    <form action={formAction} className="space-y-4 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-      <h2 className="text-lg font-semibold">本周摘要</h2>
+    <>
       <div className="space-y-2">
         <label htmlFor="title" className="block text-sm font-medium text-slate-700">
           标题
@@ -41,11 +40,15 @@ export function ReportForm({ action }: ReportFormProps) {
         <input
           id="title"
           name="title"
+          maxLength={80}
           defaultValue={state.values.title}
-          className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none transition focus:border-sky-500"
+          disabled={pending}
+          aria-describedby="title-help title-error"
+          className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none transition focus:border-sky-500 disabled:bg-slate-100"
           placeholder="例如：完成认证模块重构"
         />
-        {state.fieldErrors.title ? <p className="text-sm text-rose-600">{state.fieldErrors.title}</p> : null}
+        <p id="title-help" className="text-xs text-slate-500">最多 80 个字符。</p>
+        {state.fieldErrors.title ? <p id="title-error" className="text-sm text-rose-600">{state.fieldErrors.title}</p> : null}
       </div>
       <div className="space-y-2">
         <label htmlFor="summary" className="block text-sm font-medium text-slate-700">
@@ -54,14 +57,29 @@ export function ReportForm({ action }: ReportFormProps) {
         <textarea
           id="summary"
           name="summary"
-          rows={4}
+          rows={5}
+          minLength={10}
           defaultValue={state.values.summary}
-          className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none transition focus:border-sky-500"
+          disabled={pending}
+          aria-describedby="summary-help summary-error"
+          className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none transition focus:border-sky-500 disabled:bg-slate-100"
           placeholder="记录本周关键工作、学习和下一步计划"
         />
-        {state.fieldErrors.summary ? <p className="text-sm text-rose-600">{state.fieldErrors.summary}</p> : null}
+        <p id="summary-help" className="text-xs text-slate-500">至少 10 个字符，建议包含成果和下周计划。</p>
+        {state.fieldErrors.summary ? <p id="summary-error" className="text-sm text-rose-600">{state.fieldErrors.summary}</p> : null}
       </div>
-      {state.message ? <p className="text-sm text-rose-700">{state.message}</p> : null}
+    </>
+  );
+}
+
+export function ReportForm({ action }: ReportFormProps) {
+  const [state, formAction] = useActionState(action, initialCreateReportFormState);
+
+  return (
+    <form action={formAction} className="space-y-4 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+      <h2 className="text-lg font-semibold">本周摘要</h2>
+      <Fields state={state} />
+      <p aria-live="polite" className="text-sm text-rose-700">{state.message}</p>
       <SubmitButton />
     </form>
   );

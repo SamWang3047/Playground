@@ -1,17 +1,12 @@
-import { findAllReports, insertReport } from "@/lib/reports/repository";
+import { findReportsByUserId, insertReport } from "@/lib/reports/repository";
 import type { WeeklyReport } from "@/lib/reports/types";
 
-function byCreatedAtDesc(a: WeeklyReport, b: WeeklyReport) {
-  return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+export async function getReportsForList(userId: string): Promise<WeeklyReport[]> {
+  return findReportsByUserId(userId);
 }
 
-export async function getReportsForList(): Promise<WeeklyReport[]> {
-  const reports = await findAllReports();
-  return [...reports].sort(byCreatedAtDesc);
-}
-
-export async function getRecentReports(limit: number): Promise<WeeklyReport[]> {
-  const reports = await getReportsForList();
+export async function getRecentReports(userId: string, limit: number): Promise<WeeklyReport[]> {
+  const reports = await getReportsForList(userId);
   return reports.slice(0, limit);
 }
 
@@ -24,12 +19,12 @@ function getISOWeek(date: Date): string {
   return `${value.getUTCFullYear()}-W${String(weekNo).padStart(2, "0")}`;
 }
 
-export async function createWeeklyReport(input: { title: string; summary: string }): Promise<WeeklyReport> {
+export async function createWeeklyReport(userId: string, input: { title: string; summary: string }): Promise<WeeklyReport> {
   const now = new Date();
   return insertReport({
+    userId,
     title: input.title,
     summary: input.summary,
-    createdAt: now.toISOString().slice(0, 10),
     week: getISOWeek(now),
   });
 }
