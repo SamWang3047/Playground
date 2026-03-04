@@ -1,8 +1,8 @@
-# Weekly Report (Next.js Day 6)
+# Weekly Report (Next.js Day 7)
 
-当前进度：完成 Day 6（UI 与交互优化，loading/error/empty 反馈完善）。
+当前进度：完成 Day 7（Docker 部署到云服务器）。
 
-## 启动
+## 本地开发
 
 ```bash
 npm install
@@ -12,30 +12,28 @@ npm run prisma:migrate -- --name init
 npm run dev
 ```
 
-## Day 6 本次优化
+## Docker 化文件
 
-- 列表卡片展示提交日期，增强可读性。
-- 历史页新增统计信息（周报总数）。
-- 空状态增加“去写第一篇”快捷入口。
-- `loading.tsx` 文案与骨架细节优化。
-- `error.tsx` 提示更明确，支持重试。
-- 写周报表单增强：
-  - 提交期间禁用输入框
-  - 标题 `maxLength=80`
-  - 摘要 `minLength=10`
-  - 辅助说明与可访问性 `aria-describedby`
+- `Dockerfile`：多阶段构建，Next.js standalone 运行。
+- `.dockerignore`：忽略本地构建产物和敏感文件。
+- `docker-compose.yml`：一键启动 `app + postgres`。
+- `deploy/nginx/weekly-report.conf`：Nginx 反向代理模板。
+- `deploy/DEPLOY_DOCKER.md`：完整云服务器部署步骤。
 
-## Day 6 结构重点
+## 快速部署（云服务器）
 
-- `src/components/ReportCard.tsx`
-- `src/components/ReportList.tsx`
-- `src/components/ReportForm.tsx`
-- `src/app/(main)/reports/page.tsx`
-- `src/app/(main)/reports/loading.tsx`
-- `src/app/(main)/reports/error.tsx`
+```bash
+git clone <your_repo_url> weekly-report
+cd weekly-report
+echo 'POSTGRES_PASSWORD=304714' > .env
+docker compose up -d --build
+```
 
-## Day 7 计划
+然后按 `deploy/DEPLOY_DOCKER.md` 配置 Nginx 和 HTTPS。
 
-- 部署到 Vercel 或 Docker
-- 配置线上数据库与环境变量
-- 进行上线回归测试（登录、写周报、查看历史、退出登录）
+## 验证
+
+1. `/login` 登录/注册
+2. `/reports/new` 提交周报
+3. `/reports` 查看历史
+4. 退出登录
