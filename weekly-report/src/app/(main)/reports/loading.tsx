@@ -1,3 +1,5 @@
+import { messages } from "@/i18n/messages";
+
 function SkeletonCard() {
   return (
     <div className="animate-pulse rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
@@ -14,8 +16,8 @@ export default function ReportsLoading() {
   return (
     <section className="space-y-4">
       <div>
-        <h2 className="text-2xl font-bold text-slate-900">历史周报</h2>
-        <p className="mt-1 text-sm text-slate-500">正在加载你的周报列表...</p>
+        <h2 className="text-2xl font-bold text-slate-900">{messages.reports.pageTitle}</h2>
+        <p className="mt-1 text-sm text-slate-500">{messages.reports.loadingDescription}</p>
       </div>
       <div className="grid gap-4 md:grid-cols-2">
         <SkeletonCard />

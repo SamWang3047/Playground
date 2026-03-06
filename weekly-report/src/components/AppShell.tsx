@@ -1,4 +1,5 @@
 import { MainNav } from "@/components/navigation/MainNav";
+import { messages } from "@/i18n/messages";
 
 type AppShellProps = {
   title: string;
@@ -23,7 +24,7 @@ export function AppShell({ title, subtitle, userEmail, onLogout, children }: App
               <span className="rounded-md bg-slate-100 px-2 py-1">{userEmail}</span>
               <form action={onLogout}>
                 <button type="submit" className="rounded-md border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50">
-                  退出登录
+                  {messages.shell.signOut}
                 </button>
               </form>
             </div>

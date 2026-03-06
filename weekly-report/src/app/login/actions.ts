@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { messages } from "@/i18n/messages";
 import { prisma } from "@/lib/prisma";
 import { establishSession, hashPassword } from "@/lib/auth/session";
 import { initialLoginFormState, type LoginFormState } from "@/lib/auth/form-state";
@@ -9,13 +10,13 @@ function validateInput(email: string, password: string) {
   const fieldErrors: LoginFormState["fieldErrors"] = {};
 
   if (!email) {
-    fieldErrors.email = "邮箱不能为空";
+    fieldErrors.email = messages.validation.login.emailRequired;
   }
 
   if (!password) {
-    fieldErrors.password = "密码不能为空";
+    fieldErrors.password = messages.validation.login.passwordRequired;
   } else if (password.length < 6) {
-    fieldErrors.password = "密码长度至少 6 位";
+    fieldErrors.password = messages.validation.login.passwordMinLength;
   }
 
   return fieldErrors;
@@ -31,7 +32,7 @@ export async function loginAction(
   const fieldErrors = validateInput(email, password);
   if (fieldErrors.email || fieldErrors.password) {
     return {
-      message: prevState.message || "登录失败，请检查输入。",
+      message: prevState.message || messages.validation.login.signInFailed,
       fieldErrors,
       values: { email, password },
     };
@@ -51,7 +52,7 @@ export async function loginAction(
 
   if (existingUser.password !== passwordHash) {
     return {
-      message: "邮箱或密码错误。",
+      message: messages.validation.login.invalidCredentials,
       fieldErrors: {},
       values: { email, password: "" },
     };

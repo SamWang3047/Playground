@@ -1,6 +1,7 @@
 import { AppShell } from "@/components/AppShell";
 import { logoutAction } from "@/app/(main)/actions";
 import { requireSessionUser } from "@/lib/auth/session";
+import { messages } from "@/i18n/messages";
 
 export default async function MainLayout({
   children,
@@ -11,8 +12,8 @@ export default async function MainLayout({
 
   return (
     <AppShell
-      title="Weekly Report"
-      subtitle="Day 5: Prisma + Simple Auth"
+      title={messages.shell.title}
+      subtitle={messages.shell.subtitle}
       userEmail={user.email}
       onLogout={logoutAction}
     >

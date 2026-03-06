@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { messages } from "@/i18n/messages";
 import { requireSessionUser } from "@/lib/auth/session";
 import { createWeeklyReport } from "@/lib/reports/service";
 import {
@@ -13,15 +14,15 @@ function validateInput(title: string, summary: string) {
   const fieldErrors: CreateReportFormState["fieldErrors"] = {};
 
   if (!title) {
-    fieldErrors.title = "标题不能为空";
+    fieldErrors.title = messages.validation.report.titleRequired;
   } else if (title.length > 80) {
-    fieldErrors.title = "标题不能超过 80 个字符";
+    fieldErrors.title = messages.validation.report.titleTooLong;
   }
 
   if (!summary) {
-    fieldErrors.summary = "摘要不能为空";
+    fieldErrors.summary = messages.validation.report.summaryRequired;
   } else if (summary.length < 10) {
-    fieldErrors.summary = "摘要至少需要 10 个字符";
+    fieldErrors.summary = messages.validation.report.summaryTooShort;
   }
 
   return fieldErrors;
@@ -38,7 +39,7 @@ export async function createReportAction(
   const fieldErrors = validateInput(title, summary);
   if (fieldErrors.title || fieldErrors.summary) {
     return {
-      message: prevState.message || "提交失败，请修正表单错误后重试。",
+      message: prevState.message || messages.validation.report.submitFailed,
       fieldErrors,
       values: { title, summary },
     };

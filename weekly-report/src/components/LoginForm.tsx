@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import { initialLoginFormState, type LoginFormState } from "@/lib/auth/form-state";
+import { messages } from "@/i18n/messages";
 
 type LoginFormProps = {
   action: (prevState: LoginFormState, formData: FormData) => Promise<LoginFormState>;
@@ -17,7 +18,7 @@ function SubmitButton() {
       disabled={pending}
       className="w-full rounded-md bg-sky-600 px-4 py-2 text-sm font-medium text-white hover:bg-sky-700 disabled:cursor-not-allowed disabled:bg-sky-300"
     >
-      {pending ? "登录中..." : "登录"}
+      {pending ? messages.login.submitting : messages.login.submit}
     </button>
   );
 }
@@ -27,11 +28,11 @@ export function LoginForm({ action }: LoginFormProps) {
 
   return (
     <form action={formAction} className="mx-auto w-full max-w-md space-y-4 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-      <h2 className="text-xl font-semibold text-slate-900">用户登录</h2>
-      <p className="text-sm text-slate-500">首次登录会自动创建账户，后续使用同邮箱 + 密码登录。</p>
+      <h2 className="text-xl font-semibold text-slate-900">{messages.login.formTitle}</h2>
+      <p className="text-sm text-slate-500">{messages.login.formHint}</p>
       <div className="space-y-2">
         <label htmlFor="email" className="block text-sm font-medium text-slate-700">
-          邮箱
+          {messages.login.emailLabel}
         </label>
         <input
           id="email"
@@ -40,13 +41,13 @@ export function LoginForm({ action }: LoginFormProps) {
           defaultValue={state.values.email}
           required
           className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none transition focus:border-sky-500"
-          placeholder="you@example.com"
+          placeholder={messages.login.emailPlaceholder}
         />
         {state.fieldErrors.email ? <p className="text-sm text-rose-600">{state.fieldErrors.email}</p> : null}
       </div>
       <div className="space-y-2">
         <label htmlFor="password" className="block text-sm font-medium text-slate-700">
-          密码
+          {messages.login.passwordLabel}
         </label>
         <input
           id="password"
@@ -55,7 +56,7 @@ export function LoginForm({ action }: LoginFormProps) {
           defaultValue={state.values.password}
           required
           className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none transition focus:border-sky-500"
-          placeholder="请输入密码"
+          placeholder={messages.login.passwordPlaceholder}
         />
         {state.fieldErrors.password ? <p className="text-sm text-rose-600">{state.fieldErrors.password}</p> : null}
       </div>

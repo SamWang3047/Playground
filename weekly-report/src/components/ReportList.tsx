@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ReportCard } from "@/components/ReportCard";
+import { messages } from "@/i18n/messages";
 import type { WeeklyReport } from "@/lib/reports/types";
 
 type ReportListProps = {
@@ -10,12 +11,12 @@ export function ReportList({ reports }: ReportListProps) {
   if (reports.length === 0) {
     return (
       <div className="rounded-lg border border-dashed border-slate-300 bg-white p-8 text-center">
-        <p className="text-sm text-slate-600">还没有周报，先去“写周报”页面提交第一篇。</p>
+        <p className="text-sm text-slate-600">{messages.reports.emptyTitle}</p>
         <Link
           href="/reports/new"
           className="mt-4 inline-flex rounded-md bg-sky-600 px-4 py-2 text-sm font-medium text-white hover:bg-sky-700"
         >
-          去写第一篇
+          {messages.reports.emptyCta}
         </Link>
       </div>
     );

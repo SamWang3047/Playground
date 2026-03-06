@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import { messages } from "@/i18n/messages";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Weekly Report",
-  description: "Personal weekly report system with Next.js",
+  title: messages.app.metadataTitle,
+  description: messages.app.metadataDescription,
 };
 
 export default function RootLayout({
@@ -12,7 +13,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-CN">
+    <html lang={messages.app.lang}>
       <body>{children}</body>
     </html>
   );
